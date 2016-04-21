@@ -1,0 +1,27 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "info@lesosoftware.com",
+    "longName": "R-Member",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "compatibility": "2.7",
+                "file": "fonts/LCD.TTF",
+                "name": "FONT_LCD_DISP_NORMAL_28",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "R-Member",
+    "uuid": "6e9c3f78-a742-4fc7-ae35-5380d8631b29",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
