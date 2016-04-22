@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "fonts/Lato",
+                "name": "FONT_LATO_TXT_NORMAL_18",
+                "type": "font"
+            },
+            {
                 "compatibility": "2.7",
                 "file": "fonts/LCD.TTF",
                 "name": "FONT_LCD_DISP_NORMAL_28",

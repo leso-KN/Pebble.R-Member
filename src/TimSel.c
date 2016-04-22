@@ -1,4 +1,6 @@
 #include <pebble.h>
+#include <TimSel.h>
+#include <MsgSel.h>
 
 static Window *selTimWindow;
 static TextLayer *selTim_BG;
@@ -7,7 +9,7 @@ static TextLayer *selTim_tx_hour;
 static TextLayer *selTim_tx_min;
 static GFont fnt_lcd;
 static bool atMin;
-static time_t selTim_ticks;
+time_t selTim_ticks;
 
 static void renderTime()
 {
@@ -28,9 +30,9 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(selTim_BG));
   
   selTim_tx_hour = text_layer_create(GRect(30, 52, 35, 37));
-  selTim_tx_DP = text_layer_create(GRect(65, 52, 14, 37));
+  selTim_tx_DP = text_layer_create(GRect(70, 52, 35, 37));
   selTim_tx_min = text_layer_create(GRect(79, 52, 35, 37));
-    
+  
   text_layer_set_background_color(selTim_tx_hour, GColorWhite);
   text_layer_set_text_color(selTim_tx_hour, GColorBlack);
   text_layer_set_background_color(selTim_tx_DP, GColorBlack);
@@ -38,12 +40,11 @@ static void main_window_load(Window *window) {
   text_layer_set_background_color(selTim_tx_min, GColorBlack);
   text_layer_set_text_color(selTim_tx_min, GColorClear);
   
-  text_layer_set_text(selTim_tx_DP, ":");
-  selTim_ticks = time(NULL);
+  text_layer_set_text(selTim_tx_DP, ": ");
   renderTime();
   
   text_layer_set_text_alignment(selTim_tx_hour, GTextAlignmentCenter);
-  text_layer_set_text_alignment(selTim_tx_DP, GTextAlignmentCenter);
+  text_layer_set_text_alignment(selTim_tx_DP, GTextAlignmentLeft);
   text_layer_set_text_alignment(selTim_tx_min, GTextAlignmentCenter);
 
   fnt_lcd = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_LCD_DISP_NORMAL_28));
@@ -61,7 +62,7 @@ static void btn_select()
 {
   if (atMin)
   {
-    window_stack_pop_all(true);
+    selMsg();
   }
   else
   {
@@ -104,7 +105,21 @@ static void clickConfig(){
   window_single_click_subscribe(BUTTON_ID_DOWN, btn_down);
 }
 
-static void init() {
+void showTimSel()
+{
+  atMin=false;
+  window_stack_push(selTimWindow, true);
+  renderTime();
+  text_layer_set_background_color(selTim_tx_hour, GColorWhite);
+  text_layer_set_text_color(selTim_tx_hour, GColorBlack);
+  text_layer_set_background_color(selTim_tx_DP, GColorBlack);
+  text_layer_set_text_color(selTim_tx_DP, GColorClear);
+  text_layer_set_background_color(selTim_tx_min, GColorBlack);
+  text_layer_set_text_color(selTim_tx_min, GColorClear);
+}
+
+void init() {
+  selTim_ticks = time(NULL);
   selTimWindow = window_create();
 
   window_set_window_handlers(selTimWindow, (WindowHandlers) {
@@ -112,14 +127,9 @@ static void init() {
   });
   window_set_click_config_provider(selTimWindow, clickConfig);
 
-  window_stack_push(selTimWindow, true);
+  showTimSel();
 }
 
-static void deinit() {
+void deinit() {
     window_destroy(selTimWindow);
-}
-int main(void) {
-  init();
-  app_event_loop();
-  deinit();
 }

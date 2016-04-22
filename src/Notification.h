@@ -1,0 +1,1 @@
+void notify(char * n_msg);
